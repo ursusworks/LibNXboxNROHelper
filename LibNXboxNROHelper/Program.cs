@@ -60,10 +60,10 @@ var title = await catalogCli.GetProductsAsync(
                 );
 
 var outputDir = Path.Combine(Directory.GetCurrentDirectory(), "ProcessedImages");
-var nspForwardersDir = Path.Combine(Directory.GetCurrentDirectory(), "NSPForwarders");
+//var nspForwardersDir = Path.Combine(Directory.GetCurrentDirectory(), "NSPForwarders");
 
 Directory.CreateDirectory(outputDir);
-Directory.CreateDirectory(nspForwardersDir);
+//Directory.CreateDirectory(nspForwardersDir);
 
 var overlayPath = Path.Combine(Directory.GetCurrentDirectory(), "overlay.png");
 using var httpClient = new HttpClient();
@@ -99,8 +99,8 @@ foreach (var product in title.Products.Values)
     Console.WriteLine($"Title: {product.ProductTitle}");
     Console.WriteLine($"xCloud: {product.XCloudTitleId}");
 
-    File.AppendAllLines("titles.txt", new[] { product.ProductTitle });
-    File.AppendAllLines("titles.txt", new[] { product.XCloudTitleId });
+    File.AppendAllLines("titles.txt", new[] { $"Name: {product.ProductTitle}" });
+    File.AppendAllLines("titles.txt", new[] { $"xCloud ID: {product.XCloudTitleId}" });
 
     if (product.Image_Tile?.Url != null)
     {
