@@ -52,7 +52,7 @@ namespace Ursus.Xbox
                     PropertyNameCaseInsensitive = true
                 });
 
-                return result.Results.SelectMany(r => r.Products).ToList();
+                return result.Results.SelectMany(r => r.Products).Where(r => r.Type == "Game").ToList();
             }
             catch (Exception ex)
             {

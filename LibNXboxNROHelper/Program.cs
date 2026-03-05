@@ -99,6 +99,9 @@ foreach (var product in title.Products.Values)
     Console.WriteLine($"Title: {product.ProductTitle}");
     Console.WriteLine($"xCloud: {product.XCloudTitleId}");
 
+    File.AppendAllLines("titles.txt", new[] { product.ProductTitle });
+    File.AppendAllLines("titles.txt", new[] { product.XCloudTitleId });
+
     if (product.Image_Tile?.Url != null)
     {
         var imageUrl = $"https:{product.Image_Tile.Url}";
