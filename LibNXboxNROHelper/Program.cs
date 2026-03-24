@@ -59,6 +59,10 @@ var title = await catalogCli.GetProductsAsync(
                     authToken
                 );
 
+
+
+
+
 var outputDir = Path.Combine(Directory.GetCurrentDirectory(), "ProcessedImages");
 //var nspForwardersDir = Path.Combine(Directory.GetCurrentDirectory(), "NSPForwarders");
 
@@ -72,7 +76,7 @@ Image<Rgba32> overlayImage = null;
 if (File.Exists(overlayPath))
 {
     overlayImage = await Image.LoadAsync<Rgba32>(overlayPath);
-    overlayImage.Mutate(x => x.Resize(242, 242));
+    overlayImage.Mutate(x => x.Resize(256, 256));
 }
 else
 {
@@ -80,13 +84,23 @@ else
 }
 
 
+
 foreach (var product in title.Products.Values)
 {
-
-    if (xCloudTitleIds.Exists(id => id == product.XCloudTitleId))
+    if (product.ProductTitle.ToLower().Contains(" deluxe") || product.ProductTitle.ToLower().Contains(" celebration") || (product.ProductTitle.ToLower().Contains(" edition") && !product.ProductTitle.ToLower().Contains("mass effect")))
     {
         continue;
     }
+
+
+    if (xCloudTitleIds.Exists(id => id == product.XCloudTitleId))
+    {
+        
+
+        continue;
+    }
+
+
 
     if (product.XCloudTitleId is null)
     {
@@ -112,7 +126,7 @@ foreach (var product in title.Products.Values)
             var imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
 
             using var image = Image.Load<Rgba32>(imageBytes);
-            image.Mutate(x => x.Resize(242, 242));
+            image.Mutate(x => x.Resize(256, 256));
 
             if (overlayImage != null)
             {
@@ -121,6 +135,7 @@ foreach (var product in title.Products.Values)
 
             var outputPath = Path.Combine(outputDir, $"{product.XCloudTitleId}.png");
             await image.SaveAsPngAsync(outputPath);
+
 
             Console.WriteLine($"Saved processed image to: {outputPath}");
 
